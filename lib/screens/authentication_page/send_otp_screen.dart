@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottie/lottie.dart';
 import 'package:myapp/controller/login_controller.dart';
-import 'package:myapp/services/app_shared_preferences/authentication_services/phone_auth.dart';
+import 'package:myapp/services/authentication_services/phone_auth.dart';
 import 'package:myapp/widgets/our_elevated_button.dart';
 import 'package:myapp/widgets/our_sized_box.dart';
 

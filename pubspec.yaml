@@ -45,6 +45,7 @@ dependencies:
   get: ^4.6.1
   pinput: ^1.2.2
   cloud_firestore: ^3.1.5
+  bottom_navy_bar: ^6.0.0
 
 dev_dependencies:
   flutter_test:

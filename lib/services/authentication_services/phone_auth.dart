@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/controller/login_controller.dart';
 import 'package:myapp/dummypage.dart';
+import 'package:myapp/services/cloud_firebase_services/user_profile_detail.dart';
 import 'package:myapp/widgets/our_flutter_toast.dart';
 
 class PhoneAuth {
@@ -21,6 +22,7 @@ class PhoneAuth {
               Get.offAll(const DummyHomePage());
               OurToast().showSuccessToast("User authenticated successfully");
               Get.find<LoginController>().toggle(false);
+              UserDetailFirestore().uploadDetail();
             });
           } on FirebaseAuthException catch (e) {
             Get.find<LoginController>().toggle(false);
@@ -51,7 +53,6 @@ class PhoneAuth {
   }
 
   vertfyPin(String pin, BuildContext context) async {
-    
     Get.find<LoginController>().toggle(true);
 
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
@@ -64,6 +65,7 @@ class PhoneAuth {
           .then((value) {
         Get.offAll(const DummyHomePage());
         OurToast().showSuccessToast("User authenticated successfully");
+        UserDetailFirestore().uploadDetail();
       });
 
       // OurToast().showSuccessToast("Login Successful");

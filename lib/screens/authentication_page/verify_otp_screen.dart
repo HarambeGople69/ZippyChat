@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:myapp/controller/login_controller.dart';
-import 'package:myapp/services/app_shared_preferences/authentication_services/phone_auth.dart';
+import 'package:myapp/services/authentication_services/phone_auth.dart';
 import 'package:myapp/widgets/our_elevated_button.dart';
 import 'package:myapp/widgets/our_sized_box.dart';
 import 'package:pinput/pin_put/pin_put.dart';
