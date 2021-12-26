@@ -26,6 +26,7 @@ class _DummyHomePageState extends State<DummyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("ZIppyChat"),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () async {
@@ -70,21 +71,21 @@ class _DummyHomePageState extends State<DummyHomePage> {
         },
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
-            title: Text('Item One'),
-            icon: Icon(Icons.home),
+            title: Text('Chats'),
+            icon: Icon(Icons.chat_bubble_outline),
             activeColor: Colors.red,
           ),
           BottomNavyBarItem(
-              title: Text('Item Two'),
-              icon: Icon(Icons.apps),
+              title: Text('Calls'),
+              icon: Icon(Icons.call_sharp),
               activeColor: Colors.purpleAccent),
           BottomNavyBarItem(
-              title: Text('Item Three'),
-              icon: Icon(Icons.chat_bubble),
+              title: Text('Notifications'),
+              icon: Icon(Icons.notifications),
               activeColor: Colors.pink),
           BottomNavyBarItem(
-            title: Text('Item Four'),
-            icon: Icon(Icons.settings),
+            title: Text('Search'),
+            icon: Icon(Icons.search),
             activeColor: Colors.blue,
           ),
         ],

@@ -20,6 +20,8 @@ class UserDetailFirestore {
         {
           "id": FirebaseAuth.instance.currentUser!.uid,
           "phone_no": Get.find<LoginController>().phone_no.value,
+          "user_name":"",
+          "image_url":"",
         },
       );
     } else {
