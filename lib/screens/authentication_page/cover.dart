@@ -18,7 +18,6 @@ class _CoverPageState extends State<CoverPage> {
     OnboardingPreference().done();
   }
 
-  bool validEmail = false;
 
 
   @override

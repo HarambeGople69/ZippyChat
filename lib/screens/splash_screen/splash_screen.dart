@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myapp/dummy.dart';
+import 'package:myapp/screens/authentication_page/cover.dart';
+import 'package:myapp/screens/dashboard/dashboard_screen.dart';
 import 'package:myapp/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:myapp/screens/outer_cover.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,12 +21,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    
     super.initState();
     getValidationData().whenComplete(() {
       Timer(
         const Duration(seconds: 2),
-        done == null ? completed : loginPage,
+        done == 1
+            ? onetimesetuppage
+            : done == 2
+                ? dashboardpage
+                : done == 0
+                    ? coverpage
+                    : completed,
       );
     });
   }
@@ -46,10 +54,26 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void loginPage() {
+  void onetimesetuppage() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => const OuterCoverPage(),
+        builder: (context) => const Dummy(),
+      ),
+    );
+  }
+
+  void dashboardpage() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const DashBoardPage(),
+      ),
+    );
+  }
+
+  void coverpage() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const CoverPage(),
       ),
     );
   }

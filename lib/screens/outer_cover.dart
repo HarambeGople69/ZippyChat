@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:myapp/dummypage.dart';
+import 'package:myapp/screens/dashboard/dashboard_screen.dart';
 import 'package:myapp/screens/authentication_page/cover.dart';
 
 class OuterCoverPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class _OuterCoverPageState extends State<OuterCoverPage> {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return const DummyHomePage();
+          return const DashBoardPage();
         } else {
           return const CoverPage();
         }

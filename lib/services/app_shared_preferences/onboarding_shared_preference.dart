@@ -4,7 +4,7 @@ class OnboardingPreference{
   done() async{
    
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    await _prefs.setInt("done", 1);
+    await _prefs.setInt("done", 0);
   
   }
 }

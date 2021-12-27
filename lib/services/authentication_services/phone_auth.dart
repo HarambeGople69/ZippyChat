@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/controller/login_controller.dart';
-import 'package:myapp/dummypage.dart';
+import 'package:myapp/screens/dashboard/dashboard_screen.dart';
 import 'package:myapp/services/cloud_firebase_services/user_profile_detail.dart';
 import 'package:myapp/widgets/our_flutter_toast.dart';
 
@@ -19,7 +19,9 @@ class PhoneAuth {
             await FirebaseAuth.instance
                 .signInWithCredential(credential)
                 .then((value) {
-              Get.offAll(const DummyHomePage());
+            
+
+              // Get.offAll(const DashBoardPage());
               OurToast().showSuccessToast("User authenticated successfully");
               Get.find<LoginController>().toggle(false);
               UserDetailFirestore().uploadDetail();
@@ -47,8 +49,8 @@ class PhoneAuth {
         codeAutoRetrievalTimeout: (String verificationId) {},
         timeout: const Duration(seconds: 110),
       );
-    } catch (e) {
-      OurToast().showErrorToast(e.toString());
+    } on FirebaseAuthException catch (e) {
+      OurToast().showErrorToast(e.message!);
     }
   }
 
@@ -63,10 +65,12 @@ class PhoneAuth {
       await FirebaseAuth.instance
           .signInWithCredential(credential)
           .then((value) {
-        Get.offAll(const DummyHomePage());
+        
+        // Get.back();
         OurToast().showSuccessToast("User authenticated successfully");
         UserDetailFirestore().uploadDetail();
       });
+      // Navigator.canPop(context);
 
       // OurToast().showSuccessToast("Login Successful");
       Get.find<LoginController>().toggle(false);

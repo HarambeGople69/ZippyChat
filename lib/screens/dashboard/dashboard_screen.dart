@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/screens/authentication_page/cover.dart';
 
-class DummyHomePage extends StatefulWidget {
-  const DummyHomePage({Key? key}) : super(key: key);
+class DashBoardPage extends StatefulWidget {
+  const DashBoardPage({Key? key}) : super(key: key);
 
   @override
-  _DummyHomePageState createState() => _DummyHomePageState();
+  _DashBoardPageState createState() => _DashBoardPageState();
 }
 
-class _DummyHomePageState extends State<DummyHomePage> {
+class _DashBoardPageState extends State<DashBoardPage> {
   int _currentIndex = 0;
   PageController _pageController = PageController();
 
@@ -32,7 +32,7 @@ class _DummyHomePageState extends State<DummyHomePage> {
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
               // ignore: prefer_const_constructors
-              Get.offAll(CoverPage());
+              // Get.offAll(CoverPage());
             },
             icon: Icon(
               Icons.logout,

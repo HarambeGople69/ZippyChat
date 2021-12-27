@@ -1,8 +1,8 @@
 // ignore_for_file: sized_box_for_whitespace
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:myapp/screens/authentication_page/cover.dart';
 import 'package:myapp/screens/outer_cover.dart';
 import 'package:onboarding/onboarding.dart';
 
@@ -132,7 +132,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           proceedButtonRoute: (context) {
             return Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
-              return const OuterCoverPage();
+              return const CoverPage();
             }));
           },
         ),
