@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:myapp/screens/splash_screen/splash_screen.dart';
+import 'package:myapp/services/app_bindings/mybindings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
     return ScreenUtilInit(
       builder: () => GetMaterialApp(
+        initialBinding: MyBinding(),
         useInheritedMediaQuery: true,
 
         debugShowCheckedModeBanner: false,
@@ -33,3 +35,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+ 

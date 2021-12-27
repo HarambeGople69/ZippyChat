@@ -30,7 +30,7 @@ class PhoneAuth {
             Get.find<LoginController>().toggle(false);
 
             // print(e.message);
-            OurToast().showErrorToast(e.message!);
+            // OurToast().showErrorToast(e.message!);
           }
           Get.find<LoginController>().toggle(false);
           Get.find<LoginController>().toggleAuthScreen(false);

@@ -6,7 +6,9 @@ import 'package:myapp/dummy.dart';
 import 'package:myapp/screens/authentication_page/cover.dart';
 import 'package:myapp/screens/dashboard/dashboard_screen.dart';
 import 'package:myapp/screens/onboarding_screen/onboarding_screen.dart';
+import 'package:myapp/screens/one_time_set_up/profile_setup.dart';
 import 'package:myapp/screens/outer_cover.dart';
+import 'package:myapp/services/app_shared_preferences/one_time_setup_shared_preference.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -57,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void onetimesetuppage() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => const Dummy(),
+        builder: (context) =>  ProfileSetup(),
       ),
     );
   }

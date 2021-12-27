@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/screens/authentication_page/cover.dart';
+import 'package:myapp/services/app_shared_preferences/one_time_setup_shared_preference.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({Key? key}) : super(key: key);
@@ -32,7 +33,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
               // ignore: prefer_const_constructors
-              // Get.offAll(CoverPage());
+              OneTimeSetUp().logout();
+              Get.offAll(CoverPage());
             },
             icon: Icon(
               Icons.logout,
