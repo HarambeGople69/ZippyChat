@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/screens/authentication_page/cover.dart';
+import 'package:myapp/screens/pages/profile_page.dart';
+import 'package:myapp/screens/pages/search_user.dart';
 import 'package:myapp/services/app_shared_preferences/one_time_setup_shared_preference.dart';
 
 class DashBoardPage extends StatefulWidget {
@@ -31,13 +33,18 @@ class _DashBoardPageState extends State<DashBoardPage> {
         actions: [
           IconButton(
             onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              // ignore: prefer_const_constructors
-              OneTimeSetUp().logout();
-              Get.offAll(CoverPage());
+              // await FirebaseAuth.instance.signOut();
+              // // ignore: prefer_const_constructors
+              // OneTimeSetUp().logout();
+              // Get.offAll(CoverPage());
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ProfilePage(
+                  profileId: FirebaseAuth.instance.currentUser!.uid,
+                );
+              }));
             },
             icon: Icon(
-              Icons.logout,
+              Icons.person,
             ),
           ),
         ],
@@ -58,9 +65,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
             Container(
               color: Colors.green,
             ),
-            Container(
-              color: Colors.blue,
-            ),
+            SearchUser(),
           ],
         ),
       ),

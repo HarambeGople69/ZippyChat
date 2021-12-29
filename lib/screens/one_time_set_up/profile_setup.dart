@@ -159,6 +159,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                             if (file == null) {
                               OurToast().showErrorToast(
                                   "Profile picture can't be empty");
+                              Get.find<LoginController>().toggle(false);
                             } else {
                               final bool response = await CheckReservedName()
                                   .checkThisUserAlreadyPresentOrNot(

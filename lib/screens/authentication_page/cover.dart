@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myapp/screens/authentication_page/login_page.dart';
-import 'package:myapp/screens/authentication_page/sign_page.dart';
+// import 'package:myapp/screens/authentication_page/sign_page.dart';
 import 'package:myapp/services/app_shared_preferences/onboarding_shared_preference.dart';
 
 class CoverPage extends StatefulWidget {
@@ -43,17 +43,17 @@ class _CoverPageState extends State<CoverPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const SignUpPage();
-                      }));
-                    },
-                    child: const Text(
-                      "Register",
-                    ),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     Navigator.push(context,
+                  //         MaterialPageRoute(builder: (context) {
+                  //       return const SignUpPage();
+                  //     }));
+                  //   },
+                  //   child: const Text(
+                  //     "Register",
+                  //   ),
+                  // ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(context,

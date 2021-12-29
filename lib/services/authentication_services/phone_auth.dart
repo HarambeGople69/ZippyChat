@@ -19,12 +19,10 @@ class PhoneAuth {
             await FirebaseAuth.instance
                 .signInWithCredential(credential)
                 .then((value) {
-            
-
+              UserDetailFirestore().uploadDetail();
               // Get.offAll(const DashBoardPage());
               OurToast().showSuccessToast("User authenticated successfully");
-              Get.find<LoginController>().toggle(false);
-              UserDetailFirestore().uploadDetail();
+              // Get.find<LoginController>().toggle(false);
             });
           } on FirebaseAuthException catch (e) {
             Get.find<LoginController>().toggle(false);
@@ -32,7 +30,7 @@ class PhoneAuth {
             // print(e.message);
             // OurToast().showErrorToast(e.message!);
           }
-          Get.find<LoginController>().toggle(false);
+          // Get.find<LoginController>().toggle(false);
           Get.find<LoginController>().toggleAuthScreen(false);
         },
         verificationFailed: (FirebaseAuthException e) {
@@ -65,15 +63,14 @@ class PhoneAuth {
       await FirebaseAuth.instance
           .signInWithCredential(credential)
           .then((value) {
-        
         // Get.back();
-        OurToast().showSuccessToast("User authenticated successfully");
         UserDetailFirestore().uploadDetail();
+        OurToast().showSuccessToast("User authenticated successfully");
       });
       // Navigator.canPop(context);
 
       // OurToast().showSuccessToast("Login Successful");
-      Get.find<LoginController>().toggle(false);
+      // Get.find<LoginController>().toggle(false);
     } on FirebaseAuthException catch (e) {
       Get.find<LoginController>().toggle(false);
 

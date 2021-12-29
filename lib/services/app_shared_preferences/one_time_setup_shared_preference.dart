@@ -7,7 +7,7 @@ class OneTimeSetUp {
   }
   secondsetup()async{
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    await _prefs.setInt("done", 2);;
+    await _prefs.setInt("done", 2);
   }
 
   logout() async {

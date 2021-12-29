@@ -31,6 +31,7 @@ class UserDetailFirestore {
             "request_count": 0,
             "connection": [],
             "request": [],
+            "pending":[],
             "created_at": Timestamp.now(),
           },
         );
@@ -38,12 +39,14 @@ class UserDetailFirestore {
         Get.offAll(
           const ProfileSetup(),
         );
+        Get.find<LoginController>().toggle(false);
       } else {
         print("=============== Already done ================");
         OneTimeSetUp().secondsetup();
         Get.offAll(
           const DashBoardPage(),
         );
+        Get.find<LoginController>().toggle(false);
       }
     } catch (e) {
       print(e);
@@ -58,7 +61,7 @@ class UserDetailFirestore {
           .update({
         "user_name": name,
         "image_url": imageUrl,
-        "bio": imageUrl,
+        "bio": bio,
       }).then((value) {
         print("+++++DONE+++++");
         Get.find<LoginController>().toggle(false);
