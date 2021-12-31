@@ -1,11 +1,14 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myapp/models/user_model.dart';
 import 'package:myapp/screens/authentication_page/cover.dart';
 import 'package:myapp/screens/pages/profile_page.dart';
-import 'package:myapp/screens/pages/search_user.dart';
+import 'package:myapp/screens/pages/search_user_page.dart';
 import 'package:myapp/services/app_shared_preferences/one_time_setup_shared_preference.dart';
+import 'package:badges/badges.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({Key? key}) : super(key: key);
@@ -17,6 +20,13 @@ class DashBoardPage extends StatefulWidget {
 class _DashBoardPageState extends State<DashBoardPage> {
   int _currentIndex = 0;
   PageController _pageController = PageController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("Hello World");
+  }
 
   @override
   void dispose() {
@@ -88,7 +98,26 @@ class _DashBoardPageState extends State<DashBoardPage> {
               activeColor: Colors.purpleAccent),
           BottomNavyBarItem(
               title: Text('Notifications'),
-              icon: Icon(Icons.notifications),
+              icon: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("Users")
+                      .where("id",
+                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      UserModel currentUserData =
+                          UserModel.fromMap(snapshot.data!.docs[0]);
+                      return Badge(
+                          badgeContent: Text(
+                            currentUserData.request_count.toString(),
+                          ),
+                          child: Icon(Icons.notifications));
+                    } else {
+                      return Icon(Icons.notifications);
+                    }
+                  }),
               activeColor: Colors.pink),
           BottomNavyBarItem(
             title: Text('Search'),

@@ -1,28 +1,22 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserModel {
-  final String id;
+  String? id;
+  String? phone_no;
+  String? user_name;
+  String? image_url;
+  String? bio;
+  int? connection_count;
+  int? request_count;
+  List? connection;
+  List? request;
+  List? pending;
+  List? searchfrom;
 
-  final String phone_no;
-
-  final String user_name;
-
-  final String image_url;
-
-  final String bio;
-
-  final int connection_count;
-
-  final int request_count;
-
-  final List connection;
-
-  final List request;
-  final List pending;
-
-  final Timestamp created_at;
+  Timestamp? created_at;
 
   UserModel({
     required this.id,
@@ -36,6 +30,7 @@ class UserModel {
     required this.request,
     required this.pending,
     required this.created_at,
+    required this.searchfrom,
   });
 
   Map<String, dynamic> toMap() {
@@ -67,6 +62,9 @@ class UserModel {
       request: List.from(querySnapshot['request']),
       pending: List.from(querySnapshot['pending']),
       created_at: querySnapshot['created_at'] ?? '',
+      searchfrom: List.from(
+        querySnapshot['searchfrom'],
+      ),
     );
   }
 

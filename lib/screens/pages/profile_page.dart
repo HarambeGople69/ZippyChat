@@ -57,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ScreenUtil().setSp(30),
                                 ),
                                 child: CachedNetworkImage(
-                                  imageUrl: userModel.image_url,
+                                  imageUrl: userModel.image_url!,
 
                                   // Image.network(
                                   placeholder: (context, url) => Image.asset(
@@ -111,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               width: ScreenUtil().setSp(10),
                             ),
                             Text(
-                              userModel.user_name,
+                              userModel.user_name!,
                               style: TextStyle(
                                 fontSize: ScreenUtil().setSp(17.5),
                               ),
@@ -131,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               width: ScreenUtil().setSp(10),
                             ),
                             Text(
-                              userModel.bio,
+                              userModel.bio!,
                               style: TextStyle(
                                 fontSize: ScreenUtil().setSp(17.5),
                               ),
@@ -151,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               width: ScreenUtil().setSp(10),
                             ),
                             Text(
-                              userModel.phone_no,
+                              userModel.phone_no!,
                               style: TextStyle(
                                 fontSize: ScreenUtil().setSp(17.5),
                               ),
