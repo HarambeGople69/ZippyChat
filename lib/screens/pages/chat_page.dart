@@ -44,21 +44,23 @@ class _ChatPageState extends State<ChatPage> {
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           UserModel userModel1 =
-                              UserModel.fromMap(snapshot.data!.docs[index]);
+                              UserModel.fromMap(snapshot.data!.docs[0]);
                           return ListView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: userModel1.chatroomIds!.length,
                               itemBuilder: (context, indexx) {
                                 // return Text(userModel.chatroomIds![index]);
+                                //  List.from(userModel1
+                                //     .chatroomIds!.reversed)[indexx]
                                 return StreamBuilder(
                                     stream: FirebaseFirestore.instance
                                         .collection("ChatRooms")
                                         .where("uid",
-                                            // isEqualTo: List.from(userModel1
-                                            //     .chatroomIds!.reversed)[indexx]
-                                            isEqualTo:
-                                                userModel1.chatroomIds![indexx])
+                                            isEqualTo: List.from(userModel1
+                                                .chatroomIds!.reversed)[indexx])
+                                        // isEqualTo:
+                                        //     userModel1.chatroomIds![indexx])
                                         .snapshots(),
                                     builder: (BuildContext context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -71,6 +73,7 @@ class _ChatPageState extends State<ChatPage> {
                                         MessageGroupModel messageGroupModel =
                                             MessageGroupModel.fromMap(
                                                 snapshot.data!.docs[0]);
+                                        // return Text(messageGroupModel.uid);
                                         return Container(
                                           margin: EdgeInsets.symmetric(
                                             horizontal: ScreenUtil().setSp(10),
@@ -116,11 +119,10 @@ class _ChatPageState extends State<ChatPage> {
                                                                           .docs[0]);
                                                               return InkWell(
                                                                 onTap: () {
-                                                                  // print(
-                                                                  // userModel1
-                                                                  //         .chatroomIds![
-                                                                  //     indexx],
-                                                                  // );
+                                                                  // print(List.from(
+                                                                  //     userModel1
+                                                                  //         .chatroomIds!
+                                                                  //         .reversed)[indexx]);
                                                                   Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
@@ -129,9 +131,9 @@ class _ChatPageState extends State<ChatPage> {
                                                                     return ChattingPage(
                                                                       usermodel:
                                                                           userModel,
-                                                                      messageGroupId:
-                                                                          userModel1
-                                                                              .chatroomIds![indexx],
+                                                                      messageGroupId: List.from(userModel1
+                                                                          .chatroomIds!
+                                                                          .reversed)[indexx],
                                                                       currentUserModel:
                                                                           userModel1,
                                                                     );

@@ -35,15 +35,18 @@ class MessageRoomsDetilFirestore {
       String groupId, UserModel currentUser, UserModel receiverUser) async {
     await firestore.collection("Users").doc(receiverUser.id).update({
       "chatroomIds": FieldValue.arrayRemove([groupId])
-    });
-    await firestore.collection("Users").doc(receiverUser.id).update({
-      "chatroomIds": FieldValue.arrayUnion([groupId])
-    });
-    await firestore.collection("Users").doc(currentUser.id).update({
-      "chatroomIds": FieldValue.arrayRemove([groupId])
-    });
-    await firestore.collection("Users").doc(currentUser.id).update({
-      "chatroomIds": FieldValue.arrayUnion([groupId])
+    }).then((value) async {
+      await firestore.collection("Users").doc(receiverUser.id).update({
+        "chatroomIds": FieldValue.arrayUnion([groupId])
+      }).then((value) async {
+        await firestore.collection("Users").doc(currentUser.id).update({
+          "chatroomIds": FieldValue.arrayRemove([groupId])
+        }).then((value) async {
+          await firestore.collection("Users").doc(currentUser.id).update({
+            "chatroomIds": FieldValue.arrayUnion([groupId])
+          });
+        });
+      });
     });
   }
 }
