@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/models/user_model.dart';
 import 'package:myapp/screens/authentication_page/cover.dart';
+import 'package:myapp/screens/pages/chat_page.dart';
 import 'package:myapp/screens/pages/profile_page.dart';
 import 'package:myapp/screens/pages/search_user_page.dart';
 import 'package:myapp/services/app_shared_preferences/one_time_setup_shared_preference.dart';
@@ -66,9 +67,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
             setState(() => _currentIndex = index);
           },
           children: <Widget>[
-            Container(
-              color: Colors.blueGrey,
-            ),
+            ChatPage(),
             Container(
               color: Colors.red,
             ),

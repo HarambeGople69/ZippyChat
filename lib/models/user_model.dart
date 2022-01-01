@@ -15,39 +15,40 @@ class UserModel {
   List? request;
   List? pending;
   List? searchfrom;
+  List? chatroomIds;
 
   Timestamp? created_at;
 
-  UserModel({
-    required this.id,
-    required this.phone_no,
-    required this.user_name,
-    required this.image_url,
-    required this.bio,
-    required this.connection_count,
-    required this.request_count,
-    required this.connection,
-    required this.request,
-    required this.pending,
-    required this.created_at,
-    required this.searchfrom,
-  });
+  UserModel(
+      {required this.id,
+      required this.phone_no,
+      required this.user_name,
+      required this.image_url,
+      required this.bio,
+      required this.connection_count,
+      required this.request_count,
+      required this.connection,
+      required this.request,
+      required this.pending,
+      required this.created_at,
+      required this.searchfrom,
+      required this.chatroomIds});
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'phone_no': phone_no,
-      'user_name': user_name,
-      'image_url': image_url,
-      'bio': bio,
-      'connection_count': connection_count,
-      'request_count': request_count,
-      'connection': connection,
-      'request': request,
-      'pending': pending,
-      'created_at': created_at,
-    };
-  }
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'id': id,
+  //     'phone_no': phone_no,
+  //     'user_name': user_name,
+  //     'image_url': image_url,
+  //     'bio': bio,
+  //     'connection_count': connection_count,
+  //     'request_count': request_count,
+  //     'connection': connection,
+  //     'request': request,
+  //     'pending': pending,
+  //     'created_at': created_at,
+  //   };
+  // }
 
   factory UserModel.fromMap(DocumentSnapshot querySnapshot) {
     return UserModel(
@@ -65,10 +66,13 @@ class UserModel {
       searchfrom: List.from(
         querySnapshot['searchfrom'],
       ),
+      chatroomIds: List.from(
+        querySnapshot['chatroomIds'],
+      ),
     );
   }
 
-  String toJson() => json.encode(toMap());
+  // String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(json.decode(source));

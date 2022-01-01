@@ -34,6 +34,7 @@ class UserDetailFirestore {
             "request": [],
             "pending": [],
             "searchfrom": [],
+            "chatroomIds":[],
             "created_at": Timestamp.now(),
           },
         );

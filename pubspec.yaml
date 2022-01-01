@@ -54,6 +54,7 @@ dependencies:
   app_settings: ^4.1.1
   badges: ^2.0.2
   uuid: ^3.0.5
+  timeago: ^3.1.0 
 
 dev_dependencies:
   flutter_test:
