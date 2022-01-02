@@ -10,6 +10,7 @@ import 'package:myapp/screens/pages/profile_page.dart';
 import 'package:myapp/screens/pages/search_user_page.dart';
 import 'package:myapp/services/app_shared_preferences/one_time_setup_shared_preference.dart';
 import 'package:badges/badges.dart';
+import 'package:myapp/services/cloud_firebase_services/user_profile_detail.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({Key? key}) : super(key: key);
@@ -18,16 +19,29 @@ class DashBoardPage extends StatefulWidget {
   _DashBoardPageState createState() => _DashBoardPageState();
 }
 
-class _DashBoardPageState extends State<DashBoardPage> {
+class _DashBoardPageState extends State<DashBoardPage>
+    with WidgetsBindingObserver {
   int _currentIndex = 0;
   PageController _pageController = PageController();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print("Hello World");
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   WidgetsBinding.instance!.addObserver(this);
+  //   UserDetailFirestore().updateuserLoginStatus(true);
+  // }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   // TODO: implement didChangeAppLifecycleState
+  //   super.didChangeAppLifecycleState(state);
+  //   if (state == AppLifecycleState.resumed) {
+  //     UserDetailFirestore().updateuserLoginStatus(true);
+  //   } else {
+  //     UserDetailFirestore().updateuserLoginStatus(false);
+  //   }
+  // }
 
   @override
   void dispose() {

@@ -133,7 +133,7 @@ class _ChatPageState extends State<ChatPage> {
                                                                           userModel,
                                                                       messageGroupId: List.from(userModel1
                                                                           .chatroomIds!
-                                                                          .reversed)[indexx],
+                                                                          .reversed)[indexx] ,
                                                                       currentUserModel:
                                                                           userModel1,
                                                                     );
@@ -153,7 +153,6 @@ class _ChatPageState extends State<ChatPage> {
                                                                         imageUrl:
                                                                             userModel.image_url!,
 
-                                                                        // Image.network(
                                                                         placeholder:
                                                                             (context, url) =>
                                                                                 Image.asset(

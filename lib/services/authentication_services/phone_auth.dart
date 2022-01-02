@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/controller/login_controller.dart';
+import 'package:myapp/screens/authentication_page/cover.dart';
 import 'package:myapp/screens/dashboard/dashboard_screen.dart';
+import 'package:myapp/services/app_shared_preferences/one_time_setup_shared_preference.dart';
 import 'package:myapp/services/cloud_firebase_services/user_profile_detail.dart';
 import 'package:myapp/widgets/our_flutter_toast.dart';
 
@@ -77,5 +79,15 @@ class PhoneAuth {
       // print(e.message);
       OurToast().showErrorToast(e.message!);
     }
+  }
+
+  logout() async {
+    try {
+      UserDetailFirestore().updateuserLoginStatus(false);
+      await FirebaseAuth.instance.signOut();
+      // ignore: prefer_const_constructors
+      OneTimeSetUp().logout();
+      Get.offAll(CoverPage());
+    } catch (e) {}
   }
 }

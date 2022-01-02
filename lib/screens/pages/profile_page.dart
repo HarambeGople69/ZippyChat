@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:myapp/models/user_model.dart';
 import 'package:myapp/screens/authentication_page/cover.dart';
 import 'package:myapp/services/app_shared_preferences/one_time_setup_shared_preference.dart';
+import 'package:myapp/services/cloud_firebase_services/user_profile_detail.dart';
 import 'package:myapp/widgets/our_elevated_button.dart';
 import 'package:myapp/widgets/our_sized_box.dart';
 
@@ -18,7 +19,33 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+    UserDetailFirestore().updateuserLoginStatus(true);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      UserDetailFirestore().updateuserLoginStatus(true);
+    } else {
+      UserDetailFirestore().updateuserLoginStatus(false);
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    UserDetailFirestore().updateuserLoginStatus(false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -215,6 +242,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             ? OurElevatedButton(
                                 title: "Logout",
                                 function: () async {
+                                  print("Done Done");
+                                  await UserDetailFirestore()
+                                      .updateuserLoginStatus(false);
                                   await FirebaseAuth.instance.signOut();
                                   // ignore: prefer_const_constructors
                                   OneTimeSetUp().logout();

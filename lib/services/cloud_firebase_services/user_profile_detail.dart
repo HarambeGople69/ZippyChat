@@ -35,6 +35,7 @@ class UserDetailFirestore {
             "pending": [],
             "searchfrom": [],
             "chatroomIds":[],
+            "active":false,
             "created_at": Timestamp.now(),
           },
         );
@@ -90,6 +91,17 @@ class UserDetailFirestore {
       });
     } catch (e) {
       print(e);
+    }
+  }
+
+  updateuserLoginStatus(bool status)async{
+    try {
+      await firestore
+          .collection("Users")
+          .doc(FirebaseAuth.instance.currentUser!.uid).update({
+            "active":status,
+          });
+    } catch (e) {
     }
   }
 }
