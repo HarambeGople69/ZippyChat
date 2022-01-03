@@ -17,11 +17,13 @@ class UserModel {
   List? searchfrom;
   List? chatroomIds;
   bool? active;
+  Timestamp? lastactive;
 
   Timestamp? created_at;
 
   UserModel(
-      {required this.active,
+      {required this.lastactive,
+      required this.active,
       required this.id,
       required this.phone_no,
       required this.user_name,
@@ -72,6 +74,7 @@ class UserModel {
         querySnapshot['chatroomIds'],
       ),
       active: querySnapshot['active'],
+      lastactive: querySnapshot['lastactive'],
     );
   }
 

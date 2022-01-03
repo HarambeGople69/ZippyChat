@@ -20,31 +20,31 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance!.addObserver(this);
-    UserDetailFirestore().updateuserLoginStatus(true);
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   WidgetsBinding.instance!.addObserver(this);
+  //   UserDetailFirestore().updateuserLoginStatus(true);
+  // }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // TODO: implement didChangeAppLifecycleState
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      UserDetailFirestore().updateuserLoginStatus(true);
-    } else {
-      UserDetailFirestore().updateuserLoginStatus(false);
-    }
-  }
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   // TODO: implement didChangeAppLifecycleState
+  //   super.didChangeAppLifecycleState(state);
+  //   if (state == AppLifecycleState.resumed) {
+  //     UserDetailFirestore().updateuserLoginStatus(true);
+  //   } else {
+  //     UserDetailFirestore().updateuserLoginStatus(false);
+  //   }
+  // }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    UserDetailFirestore().updateuserLoginStatus(false);
-  }
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   super.dispose();
+  //   UserDetailFirestore().updateuserLoginStatus(false);
+  // }
 
   @override
   Widget build(BuildContext context) {

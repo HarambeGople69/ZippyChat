@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:myapp/models/message_group_model.dart';
 import 'package:myapp/models/user_model.dart';
 import 'package:myapp/screens/pages/chatting_screen.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -133,7 +135,7 @@ class _ChatPageState extends State<ChatPage> {
                                                                           userModel,
                                                                       messageGroupId: List.from(userModel1
                                                                           .chatroomIds!
-                                                                          .reversed)[indexx] ,
+                                                                          .reversed)[indexx],
                                                                       currentUserModel:
                                                                           userModel1,
                                                                     );
@@ -141,39 +143,67 @@ class _ChatPageState extends State<ChatPage> {
                                                                 },
                                                                 child: Row(
                                                                   children: [
-                                                                    ClipRRect(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .circular(
-                                                                        ScreenUtil()
-                                                                            .setSp(30),
-                                                                      ),
-                                                                      child:
-                                                                          CachedNetworkImage(
-                                                                        imageUrl:
-                                                                            userModel.image_url!,
+                                                                    Stack(
+                                                                      children: [
+                                                                        ClipRRect(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(
+                                                                            ScreenUtil().setSp(30),
+                                                                          ),
+                                                                          child:
+                                                                              CachedNetworkImage(
+                                                                            imageUrl:
+                                                                                userModel.image_url!,
 
-                                                                        placeholder:
-                                                                            (context, url) =>
+                                                                            placeholder: (context, url) =>
                                                                                 Image.asset(
-                                                                          "assets/images/profile.png",
+                                                                              "assets/images/profile.png",
+                                                                            ),
+                                                                            height:
+                                                                                ScreenUtil().setSp(60),
+                                                                            width:
+                                                                                ScreenUtil().setSp(60),
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            //   )
+                                                                          ),
                                                                         ),
-                                                                        height:
-                                                                            ScreenUtil().setSp(60),
-                                                                        width: ScreenUtil()
-                                                                            .setSp(60),
-                                                                        fit: BoxFit
-                                                                            .cover,
-                                                                        //   )
-                                                                      ),
+                                                                        Positioned(
+                                                                            bottom:
+                                                                                0,
+                                                                            right:
+                                                                                0,
+                                                                            child:
+                                                                                Container(
+                                                                              height: ScreenUtil().setSp(20),
+                                                                              width: ScreenUtil().setSp(20),
+                                                                              decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    ScreenUtil().setSp(30),
+                                                                                  ),
+                                                                                  color: userModel.active == true ? Colors.green : Colors.red),
+                                                                            )
+                                                                            )
+                                                                      ],
                                                                     ),
                                                                     SizedBox(
                                                                       width: ScreenUtil()
                                                                           .setSp(
                                                                               20),
                                                                     ),
-                                                                    Text(userModel
-                                                                        .user_name!),
+                                                                    Expanded(
+                                                                      child: Text(
+                                                                          userModel
+                                                                              .user_name!),
+                                                                    ),
+                                                                    Text(
+                                                                      timeago
+                                                                          .format(
+                                                                        messageGroupModel
+                                                                            .timestamp
+                                                                            .toDate(),
+                                                                      ),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               );

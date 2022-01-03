@@ -9,6 +9,7 @@ import 'package:myapp/models/user_model.dart';
 import 'package:myapp/services/cloud_firebase_services/message_group.dart';
 import 'package:myapp/widgets/our_flutter_toast.dart';
 import 'package:myapp/widgets/our_text_field.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ChattingPage extends StatefulWidget {
   final UserModel usermodel;
@@ -31,241 +32,568 @@ class _ChattingPageState extends State<ChattingPage> {
   final _message_focus_node = FocusNode();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(
-                ScreenUtil().setSp(15),
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("Users")
+            .where("id", isEqualTo: widget.usermodel.id)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
               ),
-              child: CachedNetworkImage(
-                imageUrl: widget.usermodel.image_url!,
+            );
+          } else if (snapshot.hasData) {
+            UserModel userModelx1 = UserModel.fromMap(snapshot.data!.docs[0]);
+            return Scaffold(
+              appBar: AppBar(
+                title: Row(
+                  children: [
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            ScreenUtil().setSp(15),
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.usermodel.image_url!,
 
-                // Image.network(
-                placeholder: (context, url) => Image.asset(
-                  "assets/images/profile.png",
-                ),
-                height: ScreenUtil().setSp(40),
-                width: ScreenUtil().setSp(40),
-                fit: BoxFit.cover,
-                //   )
-              ),
-            ),
-            SizedBox(
-              width: ScreenUtil().setSp(20),
-            ),
-            Text(
-              widget.usermodel.user_name!,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
-      body: Form(
-        key: _formKey,
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: ScreenUtil().setSp(15),
-            vertical: ScreenUtil().setSp(5),
-          ),
-          child: Column(
-            children: [
-              Expanded(
-                  child: StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection("ChatRooms")
-                          .where("uid", isEqualTo: widget.messageGroupId)
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasData) {
-                          MessageGroupModel messageGroupModel =
-                              MessageGroupModel.fromMap(snapshot.data!.docs[0]);
-                          return messageGroupModel.messages.isNotEmpty
-                              ? ListView.builder(
-                                  itemCount: messageGroupModel.messages.length,
-                                  itemBuilder: (context, index) {
-                                    MessageSendModel messageSendModel =
-                                        MessageSendModel.fromMap(
-                                            messageGroupModel.messages[index]);
-                                    return Column(
-                                      // crossAxisAlignment:
-                                      //     messageSendModel.senderId ==
-                                      //             FirebaseAuth
-                                      //                 .instance.currentUser!.uid
-                                      //         ? CrossAxisAlignment.end
-                                      //         : CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              messageSendModel.senderId ==
-                                                      FirebaseAuth.instance
-                                                          .currentUser!.uid
-                                                  ? MainAxisAlignment.end
-                                                  : MainAxisAlignment.start,
-                                          children: [
-                                            messageSendModel.senderId !=
-                                                    FirebaseAuth.instance
-                                                        .currentUser!.uid
-                                                ? ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      ScreenUtil().setSp(15),
-                                                    ),
-                                                    child: CachedNetworkImage(
-                                                      imageUrl: widget
-                                                          .usermodel.image_url!,
-
-                                                      // Image.network(
-                                                      placeholder:
-                                                          (context, url) =>
-                                                              Image.asset(
-                                                        "assets/images/profile.png",
-                                                      ),
-                                                      height: ScreenUtil()
-                                                          .setSp(40),
-                                                      width: ScreenUtil()
-                                                          .setSp(40),
-                                                      fit: BoxFit.cover,
-                                                      //   )
-                                                    ),
-                                                  )
-                                                : Container(),
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: ScreenUtil().setSp(5),
-                                                horizontal:
-                                                    ScreenUtil().setSp(5),
-                                              ),
-                                              margin: EdgeInsets.symmetric(
-                                                vertical: ScreenUtil().setSp(5),
-                                              ),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.6,
-                                              height: ScreenUtil().setSp(30),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.amberAccent,
-                                                  borderRadius: messageSendModel
-                                                              .senderId ==
-                                                          FirebaseAuth.instance
-                                                              .currentUser!.uid
-                                                      ? BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  20),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  20),
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  20),
-                                                        )
-                                                      : BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  20),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  20),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  20),
-                                                        )),
-                                              child: Text(messageSendModel
-                                                  .messageText!),
-                                            ),
-                                            messageSendModel.senderId ==
-                                                    FirebaseAuth.instance
-                                                        .currentUser!.uid
-                                                ? ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      ScreenUtil().setSp(15),
-                                                    ),
-                                                    child: CachedNetworkImage(
-                                                      imageUrl: widget
-                                                          .currentUserModel
-                                                          .image_url!,
-
-                                                      // Image.network(
-                                                      placeholder:
-                                                          (context, url) =>
-                                                              Image.asset(
-                                                        "assets/images/profile.png",
-                                                      ),
-                                                      height: ScreenUtil()
-                                                          .setSp(40),
-                                                      width: ScreenUtil()
-                                                          .setSp(40),
-                                                      fit: BoxFit.cover,
-                                                      //   )
-                                                    ),
-                                                  )
-                                                : Container()
-                                          ],
-                                        ),
-                                      ],
-                                    );
-                                  })
-                              : Text("Has no data yet");
-                        } else {
-                          return Center(child: Text(("No data")));
-                        }
-                      })),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.image),
-                  ),
-                  Expanded(
-                    child: CustomTextField(
-                      start: _message_focus_node,
-                      controller: _message_controller,
-                      validator: (value) {},
-                      title: "Send message",
-                      type: TextInputType.name,
-                      number: 1,
+                            // Image.network(
+                            placeholder: (context, url) => Image.asset(
+                              "assets/images/profile.png",
+                            ),
+                            height: ScreenUtil().setSp(40),
+                            width: ScreenUtil().setSp(40),
+                            fit: BoxFit.cover,
+                            //   )
+                          ),
+                        ),
+                        Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              height: ScreenUtil().setSp(20),
+                              width: ScreenUtil().setSp(20),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setSp(30),
+                                  ),
+                                  color: userModelx1.active == true
+                                      ? Colors.green
+                                      : Colors.red),
+                            ))
+                      ],
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      if (_message_controller.text.trim().isEmpty) {
-                        OurToast().showErrorToast("Message can't be empty");
-                      } else {
-                        MessageRoomsDetilFirestore().sendTextMessages(
-                          
-                          widget.messageGroupId,
-                          FirebaseAuth.instance.currentUser!.uid,
-                          _message_controller.text.trim(),
-                          widget.currentUserModel,
-                          widget.usermodel
-                          
-                        );
-                        setState(() {
-                          _message_controller.clear();
-                        });
-                        _message_focus_node.unfocus();
-                      }
-                    },
-                    icon: Icon(Icons.send),
-                  ),
-                ],
+                    SizedBox(
+                      width: ScreenUtil().setSp(20),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.usermodel.user_name!,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        userModelx1.active == false
+                            ? Text("Last Seen ${timeago.format(
+                                userModelx1.lastactive!.toDate(),
+                              )}")
+                            : SizedBox(),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+              body: Form(
+                key: _formKey,
+                child: Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil().setSp(15),
+                    vertical: ScreenUtil().setSp(5),
+                  ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                          child: StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection("ChatRooms")
+                                  .where("uid",
+                                      isEqualTo: widget.messageGroupId)
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (snapshot.hasData) {
+                                  MessageGroupModel messageGroupModel =
+                                      MessageGroupModel.fromMap(
+                                          snapshot.data!.docs[0]);
+                                  return messageGroupModel.messages.isNotEmpty
+                                      ? ListView.builder(
+                                          itemCount:
+                                              messageGroupModel.messages.length,
+                                          itemBuilder: (context, index) {
+                                            MessageSendModel messageSendModel =
+                                                MessageSendModel.fromMap(
+                                                    messageGroupModel
+                                                        .messages[index]);
+                                            return Column(
+                                              // crossAxisAlignment:
+                                              //     messageSendModel.senderId ==
+                                              //             FirebaseAuth
+                                              //                 .instance.currentUser!.uid
+                                              //         ? CrossAxisAlignment.end
+                                              //         : CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      messageSendModel
+                                                                  .senderId ==
+                                                              FirebaseAuth
+                                                                  .instance
+                                                                  .currentUser!
+                                                                  .uid
+                                                          ? MainAxisAlignment
+                                                              .end
+                                                          : MainAxisAlignment
+                                                              .start,
+                                                  children: [
+                                                    messageSendModel.senderId !=
+                                                            FirebaseAuth
+                                                                .instance
+                                                                .currentUser!
+                                                                .uid
+                                                        ? ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              ScreenUtil()
+                                                                  .setSp(15),
+                                                            ),
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              imageUrl: widget
+                                                                  .usermodel
+                                                                  .image_url!,
+
+                                                              // Image.network(
+                                                              placeholder:
+                                                                  (context,
+                                                                          url) =>
+                                                                      Image
+                                                                          .asset(
+                                                                "assets/images/profile.png",
+                                                              ),
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          40),
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          40),
+                                                              fit: BoxFit.cover,
+                                                              //   )
+                                                            ),
+                                                          )
+                                                        : Container(),
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                        vertical: ScreenUtil()
+                                                            .setSp(5),
+                                                        horizontal: ScreenUtil()
+                                                            .setSp(5),
+                                                      ),
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                        vertical: ScreenUtil()
+                                                            .setSp(5),
+                                                      ),
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.6,
+                                                      height: ScreenUtil()
+                                                          .setSp(30),
+                                                      decoration: BoxDecoration(
+                                                          color: Colors
+                                                              .amberAccent,
+                                                          borderRadius: messageSendModel
+                                                                      .senderId ==
+                                                                  FirebaseAuth
+                                                                      .instance
+                                                                      .currentUser!
+                                                                      .uid
+                                                              ? BorderRadius
+                                                                  .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          20),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          20),
+                                                                  bottomLeft: Radius
+                                                                      .circular(
+                                                                          20),
+                                                                )
+                                                              : BorderRadius
+                                                                  .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          20),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          20),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          20),
+                                                                )),
+                                                      child: Text(
+                                                          messageSendModel
+                                                              .messageText!),
+                                                    ),
+                                                    messageSendModel.senderId ==
+                                                            FirebaseAuth
+                                                                .instance
+                                                                .currentUser!
+                                                                .uid
+                                                        ? ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              ScreenUtil()
+                                                                  .setSp(15),
+                                                            ),
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              imageUrl: widget
+                                                                  .currentUserModel
+                                                                  .image_url!,
+
+                                                              // Image.network(
+                                                              placeholder:
+                                                                  (context,
+                                                                          url) =>
+                                                                      Image
+                                                                          .asset(
+                                                                "assets/images/profile.png",
+                                                              ),
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          40),
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          40),
+                                                              fit: BoxFit.cover,
+                                                              //   )
+                                                            ),
+                                                          )
+                                                        : Container()
+                                                  ],
+                                                ),
+                                              ],
+                                            );
+                                          })
+                                      : Text("Has no data yet");
+                                } else {
+                                  return Center(child: Text(("No data")));
+                                }
+                              })),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.image),
+                          ),
+                          Expanded(
+                            child: CustomTextField(
+                              start: _message_focus_node,
+                              controller: _message_controller,
+                              validator: (value) {},
+                              title: "Send message",
+                              type: TextInputType.name,
+                              number: 1,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              if (_message_controller.text.trim().isEmpty) {
+                                OurToast()
+                                    .showErrorToast("Message can't be empty");
+                              } else {
+                                MessageRoomsDetilFirestore().sendTextMessages(
+                                    widget.messageGroupId,
+                                    FirebaseAuth.instance.currentUser!.uid,
+                                    _message_controller.text.trim(),
+                                    widget.currentUserModel,
+                                    widget.usermodel);
+                                setState(() {
+                                  _message_controller.clear();
+                                });
+                                _message_focus_node.unfocus();
+                              }
+                            },
+                            icon: Icon(Icons.send),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return Scaffold(
+              body: Center(
+                child: Text("Error occured"),
+              ),
+            );
+          }
+        });
   }
 }
+
+// Scaffold(
+//       appBar: AppBar(
+//         title: Row(
+//           children: [
+//             ClipRRect(
+//               borderRadius: BorderRadius.circular(
+//                 ScreenUtil().setSp(15),
+//               ),
+//               child: CachedNetworkImage(
+//                 imageUrl: widget.usermodel.image_url!,
+
+//                 // Image.network(
+//                 placeholder: (context, url) => Image.asset(
+//                   "assets/images/profile.png",
+//                 ),
+//                 height: ScreenUtil().setSp(40),
+//                 width: ScreenUtil().setSp(40),
+//                 fit: BoxFit.cover,
+//                 //   )
+//               ),
+//             ),
+//             SizedBox(
+//               width: ScreenUtil().setSp(20),
+//             ),
+//             Text(
+//               // widget.usermodel.user_name!,
+//               widget.usermodel.active == true ? "a" : "b",
+//               overflow: TextOverflow.ellipsis,
+//             ),
+//           ],
+//         ),
+//       ),
+//       body: Form(
+//         key: _formKey,
+//         child: Container(
+//           margin: EdgeInsets.symmetric(
+//             horizontal: ScreenUtil().setSp(15),
+//             vertical: ScreenUtil().setSp(5),
+//           ),
+//           child: Column(
+//             children: [
+//               Expanded(
+//                   child: StreamBuilder(
+//                       stream: FirebaseFirestore.instance
+//                           .collection("ChatRooms")
+//                           .where("uid", isEqualTo: widget.messageGroupId)
+//                           .snapshots(),
+//                       builder: (BuildContext context,
+//                           AsyncSnapshot<QuerySnapshot> snapshot) {
+//                         if (snapshot.connectionState ==
+//                             ConnectionState.waiting) {
+//                           return Center(
+//                             child: CircularProgressIndicator(),
+//                           );
+//                         } else if (snapshot.hasData) {
+//                           MessageGroupModel messageGroupModel =
+//                               MessageGroupModel.fromMap(snapshot.data!.docs[0]);
+//                           return messageGroupModel.messages.isNotEmpty
+//                               ? ListView.builder(
+//                                   itemCount: messageGroupModel.messages.length,
+//                                   itemBuilder: (context, index) {
+//                                     MessageSendModel messageSendModel =
+//                                         MessageSendModel.fromMap(
+//                                             messageGroupModel.messages[index]);
+//                                     return Column(
+//                                       // crossAxisAlignment:
+//                                       //     messageSendModel.senderId ==
+//                                       //             FirebaseAuth
+//                                       //                 .instance.currentUser!.uid
+//                                       //         ? CrossAxisAlignment.end
+//                                       //         : CrossAxisAlignment.start,
+//                                       mainAxisSize: MainAxisSize.min,
+//                                       children: [
+//                                         Row(
+//                                           mainAxisAlignment:
+//                                               messageSendModel.senderId ==
+//                                                       FirebaseAuth.instance
+//                                                           .currentUser!.uid
+//                                                   ? MainAxisAlignment.end
+//                                                   : MainAxisAlignment.start,
+//                                           children: [
+//                                             messageSendModel.senderId !=
+//                                                     FirebaseAuth.instance
+//                                                         .currentUser!.uid
+//                                                 ? ClipRRect(
+//                                                     borderRadius:
+//                                                         BorderRadius.circular(
+//                                                       ScreenUtil().setSp(15),
+//                                                     ),
+//                                                     child: CachedNetworkImage(
+//                                                       imageUrl: widget
+//                                                           .usermodel.image_url!,
+
+//                                                       // Image.network(
+//                                                       placeholder:
+//                                                           (context, url) =>
+//                                                               Image.asset(
+//                                                         "assets/images/profile.png",
+//                                                       ),
+//                                                       height: ScreenUtil()
+//                                                           .setSp(40),
+//                                                       width: ScreenUtil()
+//                                                           .setSp(40),
+//                                                       fit: BoxFit.cover,
+//                                                       //   )
+//                                                     ),
+//                                                   )
+//                                                 : Container(),
+//                                             Container(
+//                                               padding: EdgeInsets.symmetric(
+//                                                 vertical: ScreenUtil().setSp(5),
+//                                                 horizontal:
+//                                                     ScreenUtil().setSp(5),
+//                                               ),
+//                                               margin: EdgeInsets.symmetric(
+//                                                 vertical: ScreenUtil().setSp(5),
+//                                               ),
+//                                               width: MediaQuery.of(context)
+//                                                       .size
+//                                                       .width *
+//                                                   0.6,
+//                                               height: ScreenUtil().setSp(30),
+//                                               decoration: BoxDecoration(
+//                                                   color: Colors.amberAccent,
+//                                                   borderRadius: messageSendModel
+//                                                               .senderId ==
+//                                                           FirebaseAuth.instance
+//                                                               .currentUser!.uid
+//                                                       ? BorderRadius.only(
+//                                                           topLeft:
+//                                                               Radius.circular(
+//                                                                   20),
+//                                                           topRight:
+//                                                               Radius.circular(
+//                                                                   20),
+//                                                           bottomLeft:
+//                                                               Radius.circular(
+//                                                                   20),
+//                                                         )
+//                                                       : BorderRadius.only(
+//                                                           topLeft:
+//                                                               Radius.circular(
+//                                                                   20),
+//                                                           topRight:
+//                                                               Radius.circular(
+//                                                                   20),
+//                                                           bottomRight:
+//                                                               Radius.circular(
+//                                                                   20),
+//                                                         )),
+//                                               child: Text(messageSendModel
+//                                                   .messageText!),
+//                                             ),
+//                                             messageSendModel.senderId ==
+//                                                     FirebaseAuth.instance
+//                                                         .currentUser!.uid
+//                                                 ? ClipRRect(
+//                                                     borderRadius:
+//                                                         BorderRadius.circular(
+//                                                       ScreenUtil().setSp(15),
+//                                                     ),
+//                                                     child: CachedNetworkImage(
+//                                                       imageUrl: widget
+//                                                           .currentUserModel
+//                                                           .image_url!,
+
+//                                                       // Image.network(
+//                                                       placeholder:
+//                                                           (context, url) =>
+//                                                               Image.asset(
+//                                                         "assets/images/profile.png",
+//                                                       ),
+//                                                       height: ScreenUtil()
+//                                                           .setSp(40),
+//                                                       width: ScreenUtil()
+//                                                           .setSp(40),
+//                                                       fit: BoxFit.cover,
+//                                                       //   )
+//                                                     ),
+//                                                   )
+//                                                 : Container()
+//                                           ],
+//                                         ),
+//                                       ],
+//                                     );
+//                                   })
+//                               : Text("Has no data yet");
+//                         } else {
+//                           return Center(child: Text(("No data")));
+//                         }
+//                       })),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   IconButton(
+//                     onPressed: () {},
+//                     icon: Icon(Icons.image),
+//                   ),
+//                   Expanded(
+//                     child: CustomTextField(
+//                       start: _message_focus_node,
+//                       controller: _message_controller,
+//                       validator: (value) {},
+//                       title: "Send message",
+//                       type: TextInputType.name,
+//                       number: 1,
+//                     ),
+//                   ),
+//                   IconButton(
+//                     onPressed: () {
+//                       if (_message_controller.text.trim().isEmpty) {
+//                         OurToast().showErrorToast("Message can't be empty");
+//                       } else {
+//                         MessageRoomsDetilFirestore().sendTextMessages(
+//                             widget.messageGroupId,
+//                             FirebaseAuth.instance.currentUser!.uid,
+//                             _message_controller.text.trim(),
+//                             widget.currentUserModel,
+//                             widget.usermodel);
+//                         setState(() {
+//                           _message_controller.clear();
+//                         });
+//                         _message_focus_node.unfocus();
+//                       }
+//                     },
+//                     icon: Icon(Icons.send),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );

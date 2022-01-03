@@ -22,6 +22,7 @@ class MessageRoomsDetilFirestore {
     MessageSendModel messageSendModel = MessageSendModel(
         senderId: senderId, type: text, messageText: text, imageUrl: "");
     await firestore.collection("ChatRooms").doc(groupID).update({
+      "timestamp": Timestamp.now(),
       "messages": FieldValue.arrayUnion(
         [messageSendModel.toMap()],
       )
